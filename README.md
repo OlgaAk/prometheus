@@ -30,3 +30,5 @@ scrape_configs:
 ```
 
 >./promtool query instant http://127.0.0.1:9090 up 
+
+<img width="600" src="https://user-images.githubusercontent.com/10347255/148077707-79fe16f8-72a0-48f0-b178-75ccbf7571b0.png">
