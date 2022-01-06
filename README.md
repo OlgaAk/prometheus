@@ -15,6 +15,12 @@ global:
 rule_files:
 - 'alerts.yml'
 
+alerting:
+ alertmanagers:
+ - static_configs: 
+   - targets:
+     - host.docker.internal:9093   
+
 scrape_configs:
 - job_name: 'prometheus'
   static_configs:
@@ -60,41 +66,45 @@ groups:
 alertmanager.yml                                                                                    
 ```
 route:
- group_by: ['alertname']
+ group_by: ["alertname"]
  group_wait: 30s
  group_interval: 5m
  repeat_interval: 1h
- receiver: 'web.hook'
+ receiver: "web.hook"
  routes:
- - receiver: 'pagerduty-critical'
+ - receiver: "pagerduty-critical"
    group_wait: 10s
    matchers:
-   - severity='critical'
- - receiver: 'slack-warning'
+   - severity="critical"
+ - receiver: "slack-warning"
    group_wait: 60s
    matchers:
-   - severity='warning'
+   - severity="warning"
+
 
 receivers:
-- name: 'web.hook'
+- name: "web.hook"
   webhook_configs:
-  - url: 'http://127.0.0.1:5001'
-- name: 'pagerduty-critical'
+  - url: "http://127.0.0.1:5001"
+- name: "pagerduty-critical"
   pagerduty_configs:
-  - routing_key: 'test'
-    service_key: 'md5-hash'
-- name: 'slack-warning'
+  - routing_key: "test"
+    service_key: "md5-hash"
+- name: "slack-warning"
   slack_configs:
-  - api_url: 'https://hooks.slack.com/services/TOKEN'
-    channel: '#warnings'
+  - api_url: "https://hooks.slack.com/services/TOKEN"
+    channel: "#warnings"
 
 inhibit_rules:
  - source_matchers:
-   - severity='critical'
+   - severity="critical"
    target_matchers:
-   - severity='warning'
-   equal: ['instance']
+   - severity="warning"
+   equal: ["instance"]
 ```
 
 >docker exec -it alertmanager sh
+
 >amtool check-config /etc/alertmanager/alertmanager.yml 
+
+>amtool config routes --config.file /etc/alertmanager/alertmanager.yml 
