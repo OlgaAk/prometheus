@@ -108,3 +108,13 @@ inhibit_rules:
 >amtool check-config /etc/alertmanager/alertmanager.yml 
 
 >amtool config routes --config.file /etc/alertmanager/alertmanager.yml 
+
+## On Docker Swarm
+
+>docker stop $(docker ps -q)
+
+>docker container prune
+
+>docker swarm init
+
+>docker service create <...>
