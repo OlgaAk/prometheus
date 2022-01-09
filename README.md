@@ -117,4 +117,14 @@ inhibit_rules:
 
 >docker swarm init
 
->docker service create <...>
+>docker network create --driver overlay <name>
+
+>docker service create -d --network <network name> --name <container_name> <image>
+  
+>docker service ls
+
+>docker service create -d --network prom-network --name alertmanager --mount type=bind,source=/opt/prometheus/alertmanager.yml,destination=/etc/alertmanager/alertmanager.yml prom/alertmanager
+  
+>docker service create -d --network prom-network --name prometheus --mount type=bind,source=/opt/prometheus/prometheus.yml,destination=/etc/prometheus/prometheus.yml prom/prometheus
+  
+>docker service rm $(docker service ls -q)   
